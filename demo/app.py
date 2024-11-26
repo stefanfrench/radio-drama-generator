@@ -6,6 +6,7 @@ from huggingface_hub import list_repo_files
 from opennotebookllm.preprocessing import DATA_LOADERS, DATA_CLEANERS
 from opennotebookllm.inference.model_loaders import load_llama_cpp_model
 from opennotebookllm.inference.text_to_text import text_to_text_stream
+from opennotebookllm.podcast_maker.script_to_audio import script_to_audio
 
 PODCAST_PROMPT = """
 You are a helpful podcast writer.
@@ -75,10 +76,19 @@ if uploaded_file is not None:
         if st.button("Generate Podcast Script"):
             with st.spinner("Generating Podcast Script..."):
                 text = ""
+                final_script = ""
                 for chunk in text_to_text_stream(
                     clean_text, model, system_prompt=system_prompt.strip()
                 ):
                     text += chunk
+                    final_script += chunk
                     if text.endswith("\n"):
                         st.write(text)
                         text = ""
+
+            if st.button("Generate Audio"):
+                filename = "demo_podcast.wav"
+                with st.spinner("Generating Audio..."):
+                    script_to_audio(final_script, filename=filename)
+
+                st.audio(filename)
