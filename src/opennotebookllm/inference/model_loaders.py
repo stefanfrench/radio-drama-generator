@@ -12,7 +12,7 @@ def load_llama_cpp_model(
     Loads the given model_id using Llama.from_pretrained.
 
     Examples:
-        >>> model = load_model(
+        >>> model = load_llama_cpp_model(
             "allenai/OLMoE-1B-7B-0924-Instruct-GGUF/olmoe-1b-7b-0924-instruct-q8_0.gguf")
 
     Args:
