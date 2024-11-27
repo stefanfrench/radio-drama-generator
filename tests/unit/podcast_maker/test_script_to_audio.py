@@ -1,9 +1,26 @@
 import os
-from src.opennotebookllm.podcast_maker.script_to_audio import script_to_audio
+
+import numpy as np
+
+from src.opennotebookllm.podcast_maker.config import PodcastConfig
+from src.opennotebookllm.podcast_maker.script_to_audio import (
+    parse_script_to_waveform,
+    save_waveform_as_file,
+)
 
 
-def test_parse_script(podcast_script: str):
+def test_parse_script_waveform(podcast_script: str, podcast_config: PodcastConfig):
+    podcast_waveform = parse_script_to_waveform(podcast_script, podcast_config)
+
+    assert isinstance(podcast_waveform, np.ndarray)
+    assert podcast_waveform.size > 1
+
+
+def test_script_to_podcast(podcast_script: str, podcast_config: PodcastConfig):
     filename = "test_podcast.wav"
-    script_to_audio(podcast_script, filename=filename)
+    podcast_waveform = parse_script_to_waveform(podcast_script, podcast_config)
 
+    save_waveform_as_file(
+        podcast_waveform, sampling_rate=podcast_config.sampling_rate, filename=filename
+    )
     assert os.path.isfile(filename)
