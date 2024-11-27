@@ -14,10 +14,5 @@ def tts_prompt():
 
 
 @pytest.fixture()
-def tts_speaker_description():
-    return "Laura's voice is enthusiastic and fast with a very close recording that has no background noise."
-
-
-@pytest.fixture()
 def podcast_script():
     return "Speaker 1: Welcome to our podcast. Speaker 2: It's great to be here!"
