@@ -2,7 +2,7 @@ from typing import Tuple
 
 from llama_cpp import Llama
 from parler_tts import ParlerTTSForConditionalGeneration
-from transformers import AutoTokenizer, PreTrainedTokenizer, PreTrainedModel
+from transformers import AutoTokenizer, PreTrainedModel, PreTrainedTokenizerBase
 
 
 def load_llama_cpp_model(
@@ -34,7 +34,7 @@ def load_llama_cpp_model(
 
 def load_parler_tts_model_and_tokenizer(
     model_id: str, device: str = "cpu"
-) -> Tuple[PreTrainedModel, PreTrainedTokenizer]:
+) -> Tuple[PreTrainedModel, PreTrainedTokenizerBase]:
     """
     Loads the given model_id using parler_tts.from_pretrained.
 
