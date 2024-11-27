@@ -17,7 +17,7 @@ def example_data():
 
 @pytest.fixture()
 def tts_prompt():
-    return "Wow you are really good at writing unit tests!"
+    return "Wow what a great unit test this is!"
 
 
 @pytest.fixture()
