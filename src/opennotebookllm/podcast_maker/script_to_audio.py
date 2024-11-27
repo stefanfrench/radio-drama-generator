@@ -2,10 +2,10 @@ from pathlib import Path
 
 import numpy as np
 
-from src.opennotebookllm.inference.text_to_speech import text_to_speech
+from opennotebookllm.inference.text_to_speech import text_to_speech
 from scipy.io.wavfile import write
 
-from src.opennotebookllm.podcast_maker.config import (
+from opennotebookllm.podcast_maker.config import (
     PodcastConfig,
     SpeakerConfig,
     speaker_1_description,

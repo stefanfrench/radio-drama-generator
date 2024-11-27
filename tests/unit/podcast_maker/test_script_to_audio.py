@@ -3,8 +3,8 @@ from pathlib import Path
 
 import numpy as np
 
-from src.opennotebookllm.podcast_maker.config import PodcastConfig
-from src.opennotebookllm.podcast_maker.script_to_audio import (
+from opennotebookllm.podcast_maker.config import PodcastConfig
+from opennotebookllm.podcast_maker.script_to_audio import (
     parse_script_to_waveform,
     save_waveform_as_file,
 )

@@ -1,8 +1,8 @@
 import numpy as np
-from src.opennotebookllm.inference.model_loaders import (
+from opennotebookllm.inference.model_loaders import (
     load_parler_tts_model_and_tokenizer,
 )
-from src.opennotebookllm.podcast_maker.config import SpeakerConfig
+from opennotebookllm.podcast_maker.config import SpeakerConfig
 
 
 def _speech_generation_parler(input_text: str, tts_config: SpeakerConfig) -> np.ndarray:

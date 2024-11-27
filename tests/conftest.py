@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from src.opennotebookllm.podcast_maker.config import (
+from opennotebookllm.podcast_maker.config import (
     PodcastConfig,
     SpeakerConfig,
     speaker_1_description,
