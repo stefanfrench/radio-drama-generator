@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from src.opennotebookllm.inference.model_loaders import load_llama_cpp_model
 from src.opennotebookllm.inference.text_to_speech import text_to_speech
@@ -7,7 +8,7 @@ from src.opennotebookllm.podcast_maker.config import PodcastConfig
 from src.opennotebookllm.podcast_maker.script_to_audio import save_waveform_as_file
 
 
-def test_text_to_text_to_speech(podcast_config: PodcastConfig):
+def test_text_to_text_to_speech(tmp_path: Path, podcast_config: PodcastConfig):
     model = load_llama_cpp_model(
         "HuggingFaceTB/smollm-135M-instruct-v0.2-Q8_0-GGUF/smollm-135m-instruct-add-basics-q8_0.gguf"
     )
@@ -22,7 +23,7 @@ def test_text_to_text_to_speech(podcast_config: PodcastConfig):
     speaker_config = list(podcast_config.speakers.values())[0]
     waveform = text_to_speech(input_text=result, tts_config=speaker_config)
 
-    filename = "test_text_to_text_to_speech_parler.wav"
+    filename = tmp_path / "test_text_to_text_to_speech_parler.wav"
     save_waveform_as_file(
         waveform=waveform, sampling_rate=podcast_config.sampling_rate, filename=filename
     )
