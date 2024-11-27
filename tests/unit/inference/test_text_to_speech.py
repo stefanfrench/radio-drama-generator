@@ -9,4 +9,4 @@ def test_text_to_speech_parler(tts_prompt, tts_speaker_description):
         model_id="parler-tts/parler-tts-mini-v1",
     )
 
-    write("test_parler_tts.wav", rate=24_000, data=waveform)
+    write("test_parler_tts.wav", rate=44_100, data=waveform)

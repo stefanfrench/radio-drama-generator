@@ -12,7 +12,7 @@ def script_to_audio(
     script: str,
     model_id: str = "parler-tts/parler-tts-mini-v1",
     filename: str = "podcast.wav",
-    sampling_rate: int = 24_000,
+    sampling_rate: int = 44_100,
 ):
     parts = script.split("Speaker")
     podcast_waveform = []
