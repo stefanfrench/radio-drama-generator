@@ -39,7 +39,7 @@ def load_parler_tts_model_and_tokenizer(
     Loads the given model_id using parler_tts.from_pretrained.
 
     Examples:
-        >>> model = load_parler_tts_model_and_tokenizer("parler-tts/parler-tts-mini-v1", "cpu")
+        >>> model, tokenizer = load_parler_tts_model_and_tokenizer("parler-tts/parler-tts-mini-v1", "cpu")
 
     Args:
         model_id (str): The model id to load.
