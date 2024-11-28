@@ -83,10 +83,10 @@ if uploaded_file is not None:
 
         system_prompt = st.text_area("Podcast generation prompt", value=PODCAST_PROMPT)
 
-        if st.button("Generate Podcast Script"):
+        if st.button("Generate Podcast"):
+            final_script = ""
             with st.spinner("Generating Podcast Script..."):
                 text = ""
-                final_script = ""
                 for chunk in text_to_text_stream(
                     clean_text, model, system_prompt=system_prompt.strip()
                 ):
@@ -96,32 +96,36 @@ if uploaded_file is not None:
                         st.write(text)
                         text = ""
 
-        if st.button("Generate Audio"):
-            model.close()  # Free up memory in order to load the TTS model
+            if final_script:
+                model.close()  # Free up memory in order to load the TTS model
 
-            filename = "demo_podcast.wav"
+                filename = "demo_podcast.wav"
 
-            with st.spinner("Downloading and Loading TTS Model..."):
-                tts_model, tokenizer = load_parler_tts_model_and_tokenizer(
-                    "parler-tts/parler-tts-mini-v1", "cpu"
+                with st.spinner("Downloading and Loading TTS Model..."):
+                    tts_model, tokenizer = load_parler_tts_model_and_tokenizer(
+                        "parler-tts/parler-tts-mini-v1", "cpu"
+                    )
+                speaker_1 = SpeakerConfig(
+                    model=tts_model,
+                    speaker_id="1",
+                    tokenizer=tokenizer,
+                    speaker_description=SPEAKER_1_DESC,
                 )
-            speaker_1 = SpeakerConfig(
-                model=tts_model,
-                speaker_id="1",
-                tokenizer=tokenizer,
-                speaker_description=SPEAKER_1_DESC,
-            )
-            speaker_2 = SpeakerConfig(
-                model=tts_model,
-                speaker_id="2",
-                tokenizer=tokenizer,
-                speaker_description=SPEAKER_2_DESC,
-            )
-            demo_podcast_config = PodcastConfig(
-                speakers={s.speaker_id: s for s in [speaker_1, speaker_2]}
-            )
+                speaker_2 = SpeakerConfig(
+                    model=tts_model,
+                    speaker_id="2",
+                    tokenizer=tokenizer,
+                    speaker_description=SPEAKER_2_DESC,
+                )
+                demo_podcast_config = PodcastConfig(
+                    speakers={s.speaker_id: s for s in [speaker_1, speaker_2]}
+                )
 
-            with st.spinner("Generating Audio..."):
-                waveform = parse_script_to_waveform(final_script, demo_podcast_config)
-            save_waveform_as_file(waveform, demo_podcast_config.sampling_rate, filename)
-            st.audio(filename)
+                with st.spinner("Generating Audio..."):
+                    waveform = parse_script_to_waveform(
+                        final_script, demo_podcast_config
+                    )
+                save_waveform_as_file(
+                    waveform, demo_podcast_config.sampling_rate, filename
+                )
+                st.audio(filename)
