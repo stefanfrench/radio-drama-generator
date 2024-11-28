@@ -1,6 +1,7 @@
 import wave
 
 import numpy as np
+import soundfile as sf
 
 from opennotebookllm.inference.model_loaders import load_parler_tts_model_and_tokenizer
 from opennotebookllm.inference.text_to_speech import text_to_speech
@@ -41,16 +42,7 @@ def parse_script_to_waveform(script: str, podcast_config: PodcastConfig):
 def save_waveform_as_file(
     waveform: np.ndarray, sampling_rate: int, filename: str
 ) -> None:
-    # Normalize the float32 waveform into int16, which is what the wave module requires
-    waveform_int16 = np.int16(
-        waveform / np.max(np.abs(waveform)) * 32767
-    )  # 32767 = max int16
-    with wave.open(filename, "w") as f:
-        f.setnchannels(1)  # 2 for Stereo, 1 for Mono
-        f.setsampwidth(2)  # bytes per sample
-        f.setframerate(sampling_rate)
-        f.writeframes(waveform_int16.tobytes())
-
+    sf.write(filename, waveform, sampling_rate)
 
 if __name__ == "__main__":
     test_filename = "test_podcast.wav"
