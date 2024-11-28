@@ -24,7 +24,7 @@ def text_to_speech(
     speaker_profile: str,
 ) -> np.ndarray:
     """
-    UPDATE! Generates a speech waveform using the input_text and a speaker configuration that defines which model to use and its parameters.
+    Generates a speech waveform using the input_text, a model and a speaker profile to define a distinct voice pattern.
 
     Examples:
         >>> waveform = text_to_speech("Welcome to our amazing podcast", "parler-tts/parler-tts-mini-v1", "Laura's voice is exciting and fast in delivery with very clear audio and no background noise.")
