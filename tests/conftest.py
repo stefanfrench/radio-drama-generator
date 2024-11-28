@@ -2,11 +2,10 @@ from pathlib import Path
 
 import pytest
 
+from opennotebookllm.inference.model_loaders import load_parler_tts_model_and_tokenizer
 from opennotebookllm.podcast_maker.config import (
     PodcastConfig,
     SpeakerConfig,
-    speaker_1_description,
-    speaker_2_description,
 )
 
 
@@ -27,14 +26,24 @@ def podcast_script():
 
 @pytest.fixture()
 def podcast_config():
+    speaker_1_description = "Laura's voice is exciting and fast in delivery with very clear audio and no background noise."
+    speaker_2_description = (
+        "Jon's voice is calm with very clear audio and no background noise."
+    )
+
+    model, tokenizer = load_parler_tts_model_and_tokenizer(
+        "parler-tts/parler-tts-mini-v1", "cpu"
+    )
     speaker_1 = SpeakerConfig(
-        model_id="parler-tts/parler-tts-mini-v1",
+        model=model,
         speaker_id="1",
+        tokenizer=tokenizer,
         speaker_description=speaker_1_description,
     )
     speaker_2 = SpeakerConfig(
-        model_id="parler-tts/parler-tts-mini-v1",
+        model=model,
         speaker_id="2",
+        tokenizer=tokenizer,
         speaker_description=speaker_2_description,
     )
     speakers = {s.speaker_id: s for s in [speaker_1, speaker_2]}

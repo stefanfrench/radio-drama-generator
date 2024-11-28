@@ -1,11 +1,15 @@
 from typing import Dict, Optional
-
-from pydantic import BaseModel
+from transformers import PreTrainedModel, PreTrainedTokenizerBase
+from pydantic import BaseModel, ConfigDict
 
 
 class SpeakerConfig(BaseModel):
-    model_id: str
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    model: PreTrainedModel
     speaker_id: str
+    # ParlerTTS specific configuration
+    tokenizer: Optional[PreTrainedTokenizerBase] = None
     speaker_description: Optional[str] = (
         None  # This description is used by the ParlerTTS model to configure the speaker profile
     )

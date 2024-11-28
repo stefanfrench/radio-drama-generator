@@ -3,9 +3,12 @@ from pathlib import Path
 import streamlit as st
 from huggingface_hub import list_repo_files
 
-from opennotebookllm.podcast_maker.config import SpeakerConfig, PodcastConfig
+from opennotebookllm.podcast_maker.config import PodcastConfig, SpeakerConfig
 from opennotebookllm.preprocessing import DATA_LOADERS, DATA_CLEANERS
-from opennotebookllm.inference.model_loaders import load_llama_cpp_model
+from opennotebookllm.inference.model_loaders import (
+    load_llama_cpp_model,
+    load_parler_tts_model_and_tokenizer,
+)
 from opennotebookllm.inference.text_to_text import text_to_text_stream
 from opennotebookllm.podcast_maker.script_to_audio import (
     parse_script_to_waveform,
@@ -27,19 +30,6 @@ speaker_1_description = "Laura's voice is exciting and fast in delivery with ver
 speaker_2_description = (
     "Jon's voice is calm with very clear audio and no background noise."
 )
-
-speaker_1 = SpeakerConfig(
-    model_id="parler-tts/parler-tts-mini-v1",
-    speaker_id="1",
-    speaker_description=speaker_1_description,
-)
-speaker_2 = SpeakerConfig(
-    model_id="parler-tts/parler-tts-mini-v1",
-    speaker_id="2",
-    speaker_description=speaker_2_description,
-)
-speakers = {s.speaker_id: s for s in [speaker_1, speaker_2]}
-sample_pod_config = PodcastConfig(speakers=speakers)
 
 CURATED_REPOS = [
     "allenai/OLMoE-1B-7B-0924-Instruct-GGUF",
@@ -110,9 +100,32 @@ if uploaded_file is not None:
 
             if st.button("Generate Audio"):
                 filename = "demo_podcast.wav"
+
+                with st.spinner("Downloading and Loading TTS Model..."):
+                    model, tokenizer = load_parler_tts_model_and_tokenizer(
+                        "parler-tts/parler-tts-mini-v1", "cpu"
+                    )
+                speaker_1 = SpeakerConfig(
+                    model=model,
+                    speaker_id="1",
+                    tokenizer=tokenizer,
+                    speaker_description=speaker_1_description,
+                )
+                speaker_2 = SpeakerConfig(
+                    model=model,
+                    speaker_id="2",
+                    tokenizer=tokenizer,
+                    speaker_description=speaker_2_description,
+                )
+                demo_podcast_config = PodcastConfig(
+                    speakers={s.speaker_id: s for s in [speaker_1, speaker_2]}
+                )
+
                 with st.spinner("Generating Audio..."):
-                    waveform = parse_script_to_waveform(final_script, sample_pod_config)
+                    waveform = parse_script_to_waveform(
+                        final_script, demo_podcast_config
+                    )
                 save_waveform_as_file(
-                    waveform, sample_pod_config.sampling_rate, filename
+                    waveform, demo_podcast_config.sampling_rate, filename
                 )
                 st.audio(filename)

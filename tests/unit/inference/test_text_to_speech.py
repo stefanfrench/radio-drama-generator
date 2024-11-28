@@ -9,8 +9,13 @@ from opennotebookllm.podcast_maker.script_to_audio import save_waveform_as_file
 def test_text_to_speech_parler(
     tmp_path: Path, tts_prompt: str, podcast_config: PodcastConfig
 ):
+    speaker_cfg = list(podcast_config.speakers.values())[0]
+
     waveform = text_to_speech(
-        input_text=tts_prompt, tts_config=list(podcast_config.speakers.values())[0]
+        tts_prompt,
+        speaker_cfg.model,
+        speaker_cfg.tokenizer,
+        speaker_cfg.speaker_description,
     )
 
     save_waveform_as_file(
