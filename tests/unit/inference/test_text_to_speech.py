@@ -16,5 +16,5 @@ def test_text_to_speech_parler(
     save_waveform_as_file(
         waveform=waveform,
         sampling_rate=podcast_config.sampling_rate,
-        filename=tmp_path / "test_parler_tts.wav",
+        filename=str(tmp_path / "test_parler_tts.wav"),
     )

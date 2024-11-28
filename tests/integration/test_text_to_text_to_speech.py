@@ -23,7 +23,7 @@ def test_text_to_text_to_speech(tmp_path: Path, podcast_config: PodcastConfig):
     speaker_config = list(podcast_config.speakers.values())[0]
     waveform = text_to_speech(input_text=result, tts_config=speaker_config)
 
-    filename = tmp_path / "test_text_to_text_to_speech_parler.wav"
+    filename = str(tmp_path / "test_text_to_text_to_speech_parler.wav")
     save_waveform_as_file(
         waveform=waveform, sampling_rate=podcast_config.sampling_rate, filename=filename
     )
