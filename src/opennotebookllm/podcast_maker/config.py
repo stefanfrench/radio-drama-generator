@@ -2,11 +2,6 @@ from typing import Dict, Optional
 
 from pydantic import BaseModel
 
-speaker_1_description = "Laura's voice is exciting and fast in delivery with very clear audio and no background noise."
-speaker_2_description = (
-    "Jon's voice is calm with very clear audio and no background noise."
-)
-
 
 class SpeakerConfig(BaseModel):
     model_id: str
