@@ -1,14 +1,11 @@
 from typing import Dict, Optional
 from transformers import PreTrainedModel, PreTrainedTokenizerBase
-from pydantic import BaseModel
-
-speaker_1_description = "Laura's voice is exciting and fast in delivery with very clear audio and no background noise."
-speaker_2_description = (
-    "Jon's voice is calm with very clear audio and no background noise."
-)
+from pydantic import BaseModel, ConfigDict
 
 
 class SpeakerConfig(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
     model: PreTrainedModel
     speaker_id: str
     # ParlerTTS specific configuration

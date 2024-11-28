@@ -13,6 +13,7 @@ dependencies = [
   "huggingface-hub",
   "llama-cpp-python",
   "loguru",
+  "pydantic",
   "PyPDF2[crypto]",
   "python-docx",
   "streamlit",

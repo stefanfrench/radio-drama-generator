@@ -6,8 +6,6 @@ from opennotebookllm.inference.model_loaders import load_parler_tts_model_and_to
 from opennotebookllm.podcast_maker.config import (
     PodcastConfig,
     SpeakerConfig,
-    speaker_1_description,
-    speaker_2_description,
 )
 
 
@@ -28,6 +26,11 @@ def podcast_script():
 
 @pytest.fixture()
 def podcast_config():
+    speaker_1_description = "Laura's voice is exciting and fast in delivery with very clear audio and no background noise."
+    speaker_2_description = (
+        "Jon's voice is calm with very clear audio and no background noise."
+    )
+
     model, tokenizer = load_parler_tts_model_and_tokenizer(
         "parler-tts/parler-tts-mini-v1", "cpu"
     )
