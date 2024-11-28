@@ -21,7 +21,7 @@ def tts_prompt():
 
 @pytest.fixture()
 def podcast_script():
-    return "Speaker 1: Welcome to our podcast. Speaker 2: It's great to be here!"
+    return '{"Speaker 1": "Welcome to our podcast.", "Speaker 2": "It\'s great to be here!"}'
 
 
 @pytest.fixture()

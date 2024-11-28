@@ -1,11 +1,8 @@
-import wave
-
 import numpy as np
 import soundfile as sf
 
 from opennotebookllm.inference.model_loaders import load_parler_tts_model_and_tokenizer
 from opennotebookllm.inference.text_to_speech import text_to_speech
-
 from opennotebookllm.podcast_maker.config import PodcastConfig, SpeakerConfig
 
 
@@ -44,14 +41,10 @@ def save_waveform_as_file(
 ) -> None:
     sf.write(filename, waveform, sampling_rate)
 
+
 if __name__ == "__main__":
     test_filename = "test_podcast.wav"
-    test_podcast_script = (
-        "Speaker 1: Welcome to our podcast. "
-        "Speaker 2: It's great to be here!"
-        "Speaker 1: So what do you want to talk about today? "
-        "Speaker 2: I wish I had a clue!"
-    )
+    test_podcast_script = '{"Speaker 1": "Welcome to our podcast.", "Speaker 2": "It\'s great to be here!", "Speaker 1": "What do you want to talk about today?", "Speaker 2": "Wish I knew!"}'
 
     model, tokenizer = load_parler_tts_model_and_tokenizer(
         "parler-tts/parler-tts-mini-v1", "cpu"
