@@ -51,6 +51,8 @@ Once the Codespaces environment launches, follow these steps:
    python -m streamlit run demo/app.py
    ```
 
+***NOTE***: The first time you run the demo app it might take a while to generate the script or the audio because it will download the models to the machine which are a few GBs in size.
+
 ## How it Works
 
 <img src="./images/document-to-podcast-diagram.png" width="1200" />
