@@ -1,9 +1,9 @@
 from llama_cpp import Llama
 
-from opennotebookllm.inference.model_loaders import load_llama_cpp_model
+from document_to_podcast.inference.model_loaders import load_llama_cpp_model
 from transformers import PreTrainedModel, PreTrainedTokenizerBase
 
-from opennotebookllm.inference.model_loaders import (
+from document_to_podcast.inference.model_loaders import (
     load_parler_tts_model_and_tokenizer,
 )
 

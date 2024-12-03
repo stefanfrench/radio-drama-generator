@@ -3,13 +3,13 @@ from pathlib import Path
 
 import streamlit as st
 
-from opennotebookllm.preprocessing import DATA_LOADERS, DATA_CLEANERS
-from opennotebookllm.inference.model_loaders import (
+from document_to_podcast.preprocessing import DATA_LOADERS, DATA_CLEANERS
+from document_to_podcast.inference.model_loaders import (
     load_llama_cpp_model,
     load_parler_tts_model_and_tokenizer,
 )
-from opennotebookllm.inference.text_to_speech import _speech_generation_parler
-from opennotebookllm.inference.text_to_text import text_to_text_stream
+from document_to_podcast.inference.text_to_speech import text_to_speech
+from document_to_podcast.inference.text_to_text import text_to_text_stream
 
 
 PODCAST_PROMPT = """
@@ -112,7 +112,7 @@ if uploaded_file is not None:
                     st.write(text)
                     speaker_id = re.search(r"Speaker (\d+)", text).group(1)
                     with st.spinner("Generating Audio..."):
-                        speech = _speech_generation_parler(
+                        speech = text_to_speech(
                             text.split(f'"Speaker {speaker_id}":')[-1],
                             speech_model,
                             speech_tokenizer,
