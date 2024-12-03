@@ -118,5 +118,5 @@ if uploaded_file is not None:
                             speech_tokenizer,
                             SPEAKER_DESCRIPTIONS[speaker_id],
                         )
-                    st.audio(speech, sample_rate=44_100)
+                    st.audio(speech, sample_rate=speech_model.config.sampling_rate)
                     text = ""
