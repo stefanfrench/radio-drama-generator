@@ -1,6 +1,6 @@
 # **Step-by-Step Guide: How the Document-to-Podcast Blueprint Works**
 
-Transforming static documents into engaging podcast episodes involves a  integration of pre-processing, LLM-powered transcript generation, and text-to-speech generation. Here's how it all works under the hood:
+Transforming static documents into engaging podcast episodes involves an integration of pre-processing, LLM-powered transcript generation, and text-to-speech generation. Here's how it all works under the hood:
 
 ---
 
@@ -33,7 +33,7 @@ Cleaner input data ensures that the model works with reliable and consistent inf
 ### ⚙️ **Key Components in this Doc Pre-Processing**
  **1 - File Loading**
 
-   - Uses functions defined in `data_loaders.py`
+   - Uses functions defined in [`data_loaders.py`](api.md/#document_to_podcast.preprocessing.data_loaders)
 
    - Supports `.html`, `.pdf`, `.txt`, and `.docx` formats.
 
@@ -41,7 +41,7 @@ Cleaner input data ensures that the model works with reliable and consistent inf
 
  **2 - Text Cleaning**
 
-   - Uses functions defined in [`data_cleaners.py`](../api/#document_to_podcast.inference.data_cleaners)
+   - Uses functions defined in [`data_cleaners.py`](api.md/#document_to_podcast.preprocessing.data_cleaners)
 
    - Removes unwanted elements like URLs, email addresses, and special characters using Python's `re` library, which leverages **Regular Expressions** (regex) to identify and manipulate specific patterns in text.
 
@@ -55,7 +55,7 @@ In this step, the pre-processed text is transformed into a conversational podcas
 
  **1 - Model Loading**
 
-   - The [`model_loader.py`](../api/#document_to_podcast.inference.model_loaders) script is responsible for loading GGUF-type models using the `llama_cpp` library.
+   - The [`model_loader.py`](api.md/#document_to_podcast.inference.model_loaders) script is responsible for loading GGUF-type models using the `llama_cpp` library.
 
    - The function `load_llama_cpp_model` takes a model ID in the format `{org}/{repo}/{filename}` and loads the specified model.
 
@@ -63,7 +63,7 @@ In this step, the pre-processed text is transformed into a conversational podcas
 
  **2 - Text-to-Text Generation**
 
-   - The [`text_to_text.py`](../api/#document_to_podcast.inference.text_to_text) script manages the interaction with the language model, converting input text into a structured conversational podcast script.
+   - The [`text_to_text.py`](api.md/#document_to_podcast.inference.text_to_text) script manages the interaction with the language model, converting input text into a structured conversational podcast script.
 
    - It uses the `chat_completion` function to process the input text and a customizable system prompt, guiding the language to generate a text output (e.g. a coherent podcast script between speakers).
 
@@ -80,7 +80,7 @@ In this final step, the generated podcast transcript is brought to life as an au
 
 **1 - Text-to-Speech Audio Generation**
 
-   - The `text_to_speech.py` script converts text into audio using a specified TTS model and tokenizer.
+   - The [`text_to_speech.py`](api.md/#document_to_podcast.inference.text_to_speech) script converts text into audio using a specified TTS model and tokenizer.
 
    - A **speaker profile** defines the voice characteristics (e.g., tone, speed, clarity) for each speaker.
 
@@ -88,7 +88,7 @@ In this final step, the generated podcast transcript is brought to life as an au
 
 **2 - Parsing and Combining Voices**
 
-- The `script_to_audio.py` script ensures each speaker’s dialogue is spoken in their unique voice.
+- The [`script_to_audio.py`](api.md/#document_to_podcast.podcast_maker.script_to_audio) script ensures each speaker’s dialogue is spoken in their unique voice.
 
 - The function `parse_script_to_waveform` splits the dialogue script by speakers and uses `text_to_speech` to generate audio for each speaker, stitching them together into a full podcast.
 
@@ -145,8 +145,8 @@ This demo uses [Streamlit](https://streamlit.io/), an open-source Python framewo
 
 ## 🎨 **Customizing the Blueprint**
 
-To better understand how you can tailor this Blueprint to suit your specific needs, please visit the **[Customization Guide](../customization)**.
+To better understand how you can tailor this Blueprint to suit your specific needs, please visit the **[Customization Guide](customization.md)**.
 
 ## 🤝 **Contributing to the Blueprint**
 
-Want to help improve or extend this Blueprint? Check out the **[Future Features & Contributions Guide](../future-features-contributions)** to see how you can contribute your ideas, code, or feedback to make this Blueprint even better!
+Want to help improve or extend this Blueprint? Check out the **[Future Features & Contributions Guide](future-features-contributions.md)** to see how you can contribute your ideas, code, or feedback to make this Blueprint even better!
