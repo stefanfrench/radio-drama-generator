@@ -11,11 +11,13 @@ The fastest way to get started. Click the button below to launch the project dir
 Once the Codespaces environment launches, follow these steps:
 
 1. **Install Dependencies**
+
    Inside the Codespaces terminal, run:
 ```bash
-pip install -e . --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+bash .github/setup.sh
 ```
 2. **Run the Demo**
+
    Inside the Codespaces terminal, start the Streamlit demo by running:
 ```bash
 python -m streamlit run demo/app.py
@@ -25,24 +27,25 @@ python -m streamlit run demo/app.py
 ### 💻  **Option 2: Local Installation**
 
 1. **Clone the Repository**
-   Inside the Codespaces terminal, run:
+
+   Inside your terminal, run:
 
 ```bash
 git clone https://github.com/mozilla-ai/document-to-podcast.git
 cd document-to-podcast
 ```
 
-
 2. **Install Dependencies**
-   Inside the terminal, run:
 
+   Inside your terminal, run:
 
 ```bash
-pip install -e . --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+pip install -e .
 ```
 
 3. **Run the Demo**
-   Inside the terminal, start the Streamlit demo by running:
+
+   Inside your terminal, start the Streamlit demo by running:
 
 ```bash
 python -m streamlit run demo/app.py

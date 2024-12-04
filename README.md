@@ -25,7 +25,7 @@ Once the Codespaces environment launches, follow these steps:
 1. **Install Dependencies**
    Inside the Codespaces terminal, run:
    ```bash
-   pip install -e . --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+   bash .github/setup.sh
 2. **Run the Demo**
    Inside the Codespaces terminal, start the Streamlit demo by running:
    ```bash
@@ -44,7 +44,7 @@ Once the Codespaces environment launches, follow these steps:
 2. **Install Dependencies**
    Inside the terminal, run:
    ```bash
-   pip install -e . --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+   pip install -e .
 3. **Run the Demo**
    Inside the terminal, start the Streamlit demo by running:
    ```bash
