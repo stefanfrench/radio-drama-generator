@@ -41,7 +41,7 @@ Cleaner input data ensures that the model works with reliable and consistent inf
 
  **2 - Text Cleaning**
 
-   - Uses functions defined in [`data_cleaners.py`](../api/#opennotebookllm.inference.data_cleaners)
+   - Uses functions defined in [`data_cleaners.py`](../api/#document_to_podcast.inference.data_cleaners)
 
    - Removes unwanted elements like URLs, email addresses, and special characters using Python's `re` library, which leverages **Regular Expressions** (regex) to identify and manipulate specific patterns in text.
 
@@ -55,7 +55,7 @@ In this step, the pre-processed text is transformed into a conversational podcas
 
  **1 - Model Loading**
 
-   - The [`model_loader.py`](../api/#opennotebookllm.inference.model_loaders) script is responsible for loading GGUF-type models using the `llama_cpp` library.
+   - The [`model_loader.py`](../api/#document_to_podcast.inference.model_loaders) script is responsible for loading GGUF-type models using the `llama_cpp` library.
 
    - The function `load_llama_cpp_model` takes a model ID in the format `{org}/{repo}/{filename}` and loads the specified model.
 
@@ -63,7 +63,7 @@ In this step, the pre-processed text is transformed into a conversational podcas
 
  **2 - Text-to-Text Generation**
 
-   - The [`text_to_text.py`](../api/#opennotebookllm.inference.text_to_text) script manages the interaction with the language model, converting input text into a structured conversational podcast script.
+   - The [`text_to_text.py`](../api/#document_to_podcast.inference.text_to_text) script manages the interaction with the language model, converting input text into a structured conversational podcast script.
 
    - It uses the `chat_completion` function to process the input text and a customizable system prompt, guiding the language to generate a text output (e.g. a coherent podcast script between speakers).
 

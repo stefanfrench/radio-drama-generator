@@ -1,4 +1,8 @@
+from typing import Tuple
+
 from llama_cpp import Llama
+from parler_tts import ParlerTTSForConditionalGeneration
+from transformers import AutoTokenizer, PreTrainedModel, PreTrainedTokenizerBase
 
 
 def load_llama_cpp_model(
@@ -8,7 +12,7 @@ def load_llama_cpp_model(
     Loads the given model_id using Llama.from_pretrained.
 
     Examples:
-        >>> model = load_model(
+        >>> model = load_llama_cpp_model(
             "allenai/OLMoE-1B-7B-0924-Instruct-GGUF/olmoe-1b-7b-0924-instruct-q8_0.gguf")
 
     Args:
@@ -26,3 +30,26 @@ def load_llama_cpp_model(
         n_ctx=0,
     )
     return model
+
+
+def load_parler_tts_model_and_tokenizer(
+    model_id: str, device: str = "cpu"
+) -> Tuple[PreTrainedModel, PreTrainedTokenizerBase]:
+    """
+    Loads the given model_id using parler_tts.from_pretrained.
+
+    Examples:
+        >>> model, tokenizer = load_parler_tts_model_and_tokenizer("parler-tts/parler-tts-mini-v1", "cpu")
+
+    Args:
+        model_id (str): The model id to load.
+            Format is expected to be `{repo}/{filename}`.
+        device (str): The device to load the model on, such as "cuda:0" or "cpu".
+
+    Returns:
+        PreTrainedModel: The loaded model.
+    """
+    model = ParlerTTSForConditionalGeneration.from_pretrained(model_id).to(device)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+    return model, tokenizer

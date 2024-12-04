@@ -25,7 +25,7 @@ Once the Codespaces environment launches, follow these steps:
 1. **Install Dependencies**
    Inside the Codespaces terminal, run:
    ```bash
-   pip install -e . --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+   bash .github/setup.sh
 2. **Run the Demo**
    Inside the Codespaces terminal, start the Streamlit demo by running:
    ```bash
@@ -44,12 +44,14 @@ Once the Codespaces environment launches, follow these steps:
 2. **Install Dependencies**
    Inside the terminal, run:
    ```bash
-   pip install -e . --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+   pip install -e .
 3. **Run the Demo**
    Inside the terminal, start the Streamlit demo by running:
    ```bash
    python -m streamlit run demo/app.py
    ```
+
+***NOTE***: The first time you run the demo app it might take a while to generate the script or the audio because it will download the models to the machine which are a few GBs in size.
 
 ## How it Works
 
@@ -95,6 +97,16 @@ Once the Codespaces environment launches, follow these steps:
 
 - **Dependencies**:
   - Dependencies listed in `pyproject.toml`
+
+## Troubleshooting
+
+> When starting up the codespace, I get the message `Oh no, it looks like you are offline!`
+
+If you are on Firefox and have Enhanced Tracking Protection `On`, try turning it `Off` for the codespace webpage.
+
+> During the installation of the package, it fails with `ERROR: Failed building wheel for llama-cpp-python`
+
+You are probably missing the `GNU Make` package. A quick way to solve it is run on your terminal `sudo apt install build-essential`
 
 ## License
 
