@@ -2,8 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from opennotebookllm.inference.model_loaders import load_parler_tts_model_and_tokenizer
-from opennotebookllm.podcast_maker.config import (
+from document_to_podcast.inference.model_loaders import (
+    load_parler_tts_model_and_tokenizer,
+)
+from document_to_podcast.podcast_maker.config import (
     PodcastConfig,
     SpeakerConfig,
 )

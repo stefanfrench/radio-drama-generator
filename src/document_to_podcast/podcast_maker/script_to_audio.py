@@ -1,9 +1,11 @@
 import numpy as np
 import soundfile as sf
 
-from opennotebookllm.inference.model_loaders import load_parler_tts_model_and_tokenizer
-from opennotebookllm.inference.text_to_speech import text_to_speech
-from opennotebookllm.podcast_maker.config import PodcastConfig, SpeakerConfig
+from document_to_podcast.inference.model_loaders import (
+    load_parler_tts_model_and_tokenizer,
+)
+from document_to_podcast.inference.text_to_speech import text_to_speech
+from document_to_podcast.podcast_maker.config import PodcastConfig, SpeakerConfig
 
 
 def parse_script_to_waveform(script: str, podcast_config: PodcastConfig):

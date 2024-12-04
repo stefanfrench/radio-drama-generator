@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from opennotebookllm.inference.text_to_speech import text_to_speech
+from document_to_podcast.inference.text_to_speech import text_to_speech
 
-from opennotebookllm.podcast_maker.config import PodcastConfig
-from opennotebookllm.podcast_maker.script_to_audio import save_waveform_as_file
+from document_to_podcast.podcast_maker.config import PodcastConfig
+from document_to_podcast.podcast_maker.script_to_audio import save_waveform_as_file
 
 
 def test_text_to_speech_parler(

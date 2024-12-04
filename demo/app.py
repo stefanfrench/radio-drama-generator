@@ -61,7 +61,7 @@ if uploaded_file is not None:
     st.divider()
     st.header("Loading and Cleaning Data")
     st.markdown(
-        "[API Reference for data_cleaners](https://mozilla-ai.github.io/document-to-podcast/api/#opennotebookllm.preprocessing.data_cleaners)"
+        "[API Reference for data_cleaners](https://mozilla-ai.github.io/document-to-podcast/api/#document_to_podcast.preprocessing.data_cleaners)"
     )
 
     extension = Path(uploaded_file.name).suffix
@@ -81,7 +81,7 @@ if uploaded_file is not None:
     st.divider()
     st.header("Downloading and Loading models")
     st.markdown(
-        "[API Reference for model_loaders](https://mozilla-ai.github.io/document-to-podcast/api/#opennotebookllm.inference.model_loaders)"
+        "[API Reference for model_loaders](https://mozilla-ai.github.io/document-to-podcast/api/#document_to_podcast.inference.model_loaders)"
     )
 
     text_model = load_text_to_text_model()
