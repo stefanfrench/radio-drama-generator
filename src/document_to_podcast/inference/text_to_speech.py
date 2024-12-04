@@ -27,7 +27,7 @@ def text_to_speech(
     Generates a speech waveform using the input_text, a model and a speaker profile to define a distinct voice pattern.
 
     Examples:
-        >>> waveform = text_to_speech("Welcome to our amazing podcast", "parler-tts/parler-tts-mini-v1", "Laura's voice is exciting and fast in delivery with very clear audio and no background noise.")
+        >>> waveform = text_to_speech(input_text="Welcome to our amazing podcast", model=model, tokenizer=tokenizer, speaker_profile="Laura's voice is exciting and fast in delivery with very clear audio and no background noise.")
 
     Args:
         input_text (str): The text to convert to speech.
