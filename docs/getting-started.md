@@ -15,16 +15,13 @@ python -m streamlit run demo/app.py
 
 
 ### 💻  **Option 2: Local Installation**
+1.**Clone the Repository**
 
-1. **Clone the Repository**
-
-   Inside your terminal, run:
-
+Inside your terminal, run:
 ```bash
-git clone https://github.com/mozilla-ai/document-to-podcast.git
-cd document-to-podcast
+   git clone https://github.com/mozilla-ai/document-to-podcast.git
+   cd document-to-podcast
 ```
-
 2. **Install Dependencies**
 
    Inside your terminal, run:
@@ -32,11 +29,18 @@ cd document-to-podcast
 ```bash
 pip install -e .
 ```
-
 3. **Run the Demo**
 
    Inside your terminal, start the Streamlit demo by running:
 
 ```bash
 python -m streamlit run demo/app.py
+```
+
+
+### [Optional]: Use Parler models for text-to-speech
+
+If you want to use the [parler tts](https://github.com/huggingface/parler-tts) models, you will need to **additionally** install an optional dependency by running:
+```bash
+pip install -e '.[parler]'
 ```

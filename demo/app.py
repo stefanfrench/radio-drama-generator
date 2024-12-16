@@ -8,7 +8,7 @@ import streamlit as st
 from document_to_podcast.preprocessing import DATA_LOADERS, DATA_CLEANERS
 from document_to_podcast.inference.model_loaders import (
     load_llama_cpp_model,
-    load_parler_tts_model_and_tokenizer,
+    load_outetts_model,
 )
 from document_to_podcast.config import DEFAULT_PROMPT, DEFAULT_SPEAKERS, Speaker
 from document_to_podcast.inference.text_to_speech import text_to_speech
@@ -23,8 +23,8 @@ def load_text_to_text_model():
 
 
 @st.cache_resource
-def load_text_to_speech_model_and_tokenizer():
-    return load_parler_tts_model_and_tokenizer("parler-tts/parler-tts-mini-v1", "cpu")
+def load_text_to_speech_model():
+    return load_outetts_model("OuteAI/OuteTTS-0.2-500M-GGUF/OuteTTS-0.2-500M-FP16.gguf")
 
 
 script = "script"
@@ -89,7 +89,7 @@ if uploaded_file is not None:
     st.markdown(
         "For this demo, we are using the following models: \n"
         "- [OLMoE-1B-7B-0924-Instruct-GGUF](https://huggingface.co/allenai/OLMoE-1B-7B-0924-Instruct-GGUF)\n"
-        "- [parler-tts-mini-v1](https://huggingface.co/parler-tts/parler-tts-mini-v1)"
+        "- [OuteAI/OuteTTS-0.1-350M-GGUF/OuteTTS-0.1-350M-FP16.gguf](https://huggingface.co/OuteAI/OuteTTS-0.1-350M-GGUF)"
     )
     st.markdown(
         "You can check the [Customization Guide](https://mozilla-ai.github.io/document-to-podcast/customization/)"
@@ -97,7 +97,7 @@ if uploaded_file is not None:
     )
 
     text_model = load_text_to_text_model()
-    speech_model, speech_tokenizer = load_text_to_speech_model_and_tokenizer()
+    speech_model = load_text_to_speech_model()
 
     # ~4 characters per token is considered a reasonable default.
     max_characters = text_model.n_ctx() * 4
@@ -147,10 +147,10 @@ if uploaded_file is not None:
                         speech = text_to_speech(
                             text.split(f'"Speaker {speaker_id}":')[-1],
                             speech_model,
-                            speech_tokenizer,
                             voice_profile,
                         )
-                    st.audio(speech, sample_rate=44100)
+                    st.audio(speech, sample_rate=speech_model.audio_codec.sr)
+
                     st.session_state.audio.append(speech)
                     text = ""
 
@@ -160,7 +160,7 @@ if uploaded_file is not None:
             sf.write(
                 "podcast.wav",
                 st.session_state.audio,
-                samplerate=44100,
+                samplerate=speech_model.audio_codec.sr,
             )
             st.markdown("Podcast saved to disk!")
 

@@ -13,7 +13,7 @@ dependencies = [
   "huggingface-hub",
   "llama-cpp-python",
   "loguru",
-  "parler_tts",
+  "outetts",
   "pydantic",
   "PyPDF2[crypto]",
   "python-docx",
@@ -31,6 +31,10 @@ tests = [
   "pytest>=8,<9",
   "pytest-sugar>=0.9.6",
   "pytest-mock>=3.14.0"
+]
+
+parler = [
+  "parler_tts @ git+https://github.com/huggingface/parler-tts.git",
 ]
 
 [project.urls]

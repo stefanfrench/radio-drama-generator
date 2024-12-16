@@ -56,11 +56,9 @@ In this step, the pre-processed text is transformed into a conversational podcas
 
  **1 - Model Loading**
 
-   - The [`model_loader.py`](api.md/#document_to_podcast.inference.model_loaders) script is responsible for loading GGUF-type models using the `llama_cpp` library.
+   - The [`model_loader.py`](api.md/#document_to_podcast.inference.model_loaders) module is responsible for loading the `text-to-text` models using the `llama_cpp` library.
 
-   - The function `load_llama_cpp_model` takes a model ID in the format `{org}/{repo}/{filename}` and loads the specified model.
-
-   - This approach of using the `llama_cpp` library supports efficient CPU-based inference, making language models accessible even on machines without GPUs.
+   - The function `load_llama_cpp_model` takes a model ID in the format `{org}/{repo}/{filename}` and loads the specified model. This approach of using the `llama_cpp` library supports efficient CPU-based inference, making language models accessible even on machines without GPUs.
 
  **2 - Text-to-Text Generation**
 
@@ -79,22 +77,21 @@ In this final step, the generated podcast transcript is brought to life as an au
 
 ### ⚙️ **Key Components in this Step**
 
-**1 - Text-to-Speech Audio Generation**
+ **1 - Model Loading**
 
-   - The [`text_to_speech.py`](api.md/#document_to_podcast.inference.text_to_speech) script converts text into audio using a specified TTS model and tokenizer.
+   - The [`model_loader.py`](api.md/#document_to_podcast.inference.model_loaders) module is responsible for loading the `text-to-speech` models using the `outetts` and `parler_tts` libraries.
 
-   - A **speaker profile** defines the voice characteristics (e.g., tone, speed, clarity) for each speaker.
+   - The function `load_outetts_model` takes a model ID in the format `{org}/{repo}/{filename}` and loads the specified model, either on CPU or GPU, based on the `device` parameter. The parameter `language` also enables to swap between the languages the Oute package supports (as of Dec 2024: `en, zh, ja, ko`)
 
-   - The function `text_to_speech` takes the input text (e.g podcast script) and speaker profile, generating a waveform (audio data) that represents the spoken version of the text.
+   - The function `load_parler_tts_model_and_tokenizer` takes a model ID in the format `{repo}/{filename}` and loads the specified model and tokenizer, either on CPU or GPU, based on the `device` parameter.
 
-**2 - Parsing and Combining Voices**
+**2 - Text-to-Speech Audio Generation**
 
-- The [`script_to_audio.py`](api.md/#document_to_podcast.podcast_maker.script_to_audio) script ensures each speaker’s dialogue is spoken in their unique voice.
+   - The [`text_to_speech.py`](api.md/#document_to_podcast.inference.text_to_speech) script converts text into audio using a specified TTS model.
 
-- The function `parse_script_to_waveform` splits the dialogue script by speakers and uses `text_to_speech` to generate audio for each speaker, stitching them together into a full podcast.
+   - A **speaker profile** defines the voice characteristics (e.g., tone, speed, clarity) for each speaker. This is specific to each TTS package. Oute models require one of the IDs specified [here](https://github.com/edwko/OuteTTS/tree/main/outetts/version/v1/default_speakers). Parler requires natural language description of the speaker's voice and you have to use a pre-defined name (see [here](https://github.com/huggingface/parler-tts/blob/main/INFERENCE.md#speaker-consistency))
 
-- Once the podcast waveform is ready, the save_waveform_as_file function saves it as an audio file (e.g., MP3 or WAV), making it ready for distribution.
-
+   - The function `text_to_speech` takes the input text (e.g. podcast script) and speaker profile, generating a waveform (audio data in a numpy array) that represents the spoken version of the text.
 
 ## **Bringing It All Together in `app.py`**
 
@@ -123,7 +120,7 @@ This demo uses [Streamlit](https://streamlit.io/), an open-source Python framewo
 
 - The script uses `load_llama_cpp_model` from `model_loader.py` to load the LLM for generating the podcast script.
 
-- Similarly, `load_parler_tts_model_and_tokenizer` is used to prepare the TTS model and tokenizer for audio generation.
+- Similarly, `load_outetts_model` is used to prepare the TTS model and tokenizer for audio generation.
 
 - These models are cached using `@st.cache_resource` to ensure fast and efficient reuse during app interactions.
 

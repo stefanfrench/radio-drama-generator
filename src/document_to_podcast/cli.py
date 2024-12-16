@@ -7,7 +7,6 @@ import yaml
 from fire import Fire
 from loguru import logger
 
-
 from document_to_podcast.config import (
     Config,
     Speaker,
@@ -17,6 +16,7 @@ from document_to_podcast.config import (
 )
 from document_to_podcast.inference.model_loaders import (
     load_llama_cpp_model,
+    load_outetts_model,
     load_parler_tts_model_and_tokenizer,
 )
 from document_to_podcast.inference.text_to_text import text_to_text_stream
@@ -30,7 +30,7 @@ def document_to_podcast(
     output_folder: str | None = None,
     text_to_text_model: str = "allenai/OLMoE-1B-7B-0924-Instruct-GGUF/olmoe-1b-7b-0924-instruct-q8_0.gguf",
     text_to_text_prompt: str = DEFAULT_PROMPT,
-    text_to_speech_model: SUPPORTED_TTS_MODELS = "parler-tts/parler-tts-mini-v1",
+    text_to_speech_model: SUPPORTED_TTS_MODELS = "OuteAI/OuteTTS-0.1-350M-GGUF/OuteTTS-0.1-350M-FP16.gguf",
     speakers: list[Speaker] | None = None,
     from_config: str | None = None,
 ):
@@ -65,12 +65,13 @@ def document_to_podcast(
             Defaults to DEFAULT_PROMPT.
 
         text_to_speech_model (str, optional): The path to the text-to-speech model.
-            Defaults to `parler-tts/parler-tts-mini-v1`.
+            Defaults to `OuteAI/OuteTTS-0.1-350M-GGUF/OuteTTS-0.1-350M-FP16.gguf`.
 
         speakers (list[Speaker] | None, optional): The speakers for the podcast.
             Defaults to DEFAULT_SPEAKERS.
 
         from_config (str, optional): The path to the config file. Defaults to None.
+
 
             If provided, all other arguments will be ignored.
     """
@@ -103,10 +104,17 @@ def document_to_podcast(
 
     logger.info(f"Loading {config.text_to_text_model}")
     text_model = load_llama_cpp_model(model_id=config.text_to_text_model)
-    logger.info(f"Loading {config.text_to_speech_model}")
-    speech_model, speech_tokenizer = load_parler_tts_model_and_tokenizer(
-        model_id=config.text_to_speech_model
-    )
+
+    logger.info(f"Loading {config.text_to_speech_model} on {config.device}")
+    if "oute" in config.text_to_speech_model.lower():
+        speech_model = load_outetts_model(model_id=config.text_to_speech_model)
+        speech_tokenizer = None
+        sample_rate = speech_model.audio_codec.sr
+    else:
+        speech_model, speech_tokenizer = load_parler_tts_model_and_tokenizer(
+            model_id=config.text_to_speech_model
+        )
+        sample_rate = speech_model.config.sampling_rate
 
     # ~4 characters per token is considered a reasonable default.
     max_characters = text_model.n_ctx() * 4
@@ -141,8 +149,8 @@ def document_to_podcast(
             speech = text_to_speech(
                 text.split(f'"Speaker {speaker_id}":')[-1],
                 speech_model,
-                speech_tokenizer,
                 voice_profile,
+                tokenizer=speech_tokenizer,  # Applicable only for parler models
             )
             podcast_audio.append(speech)
             text = ""
@@ -151,7 +159,7 @@ def document_to_podcast(
     sf.write(
         str(output_folder / "podcast.wav"),
         np.concatenate(podcast_audio),
-        samplerate=44100,
+        samplerate=sample_rate,
     )
     (output_folder / "podcast.txt").write_text(podcast_script)
     logger.success("Done!")

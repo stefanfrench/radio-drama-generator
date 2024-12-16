@@ -31,18 +31,19 @@ DEFAULT_SPEAKERS = [
         "id": 1,
         "name": "Laura",
         "description": "The main host. She explains topics clearly using anecdotes and analogies, teaching in an engaging and captivating way.",
-        "voice_profile": "Laura's voice is exciting and fast in delivery with very clear audio and no background noise.",
+        "voice_profile": "female_1",
     },
     {
         "id": 2,
         "name": "Jon",
         "description": "The co-host. He keeps the conversation on track, asks curious follow-up questions, and reacts with excitement or confusion, often using interjections like hmm or umm.",
-        "voice_profile": "Jon's voice is calm with very clear audio and no background noise.",
+        "voice_profile": "male_1",
     },
 ]
 
-
 SUPPORTED_TTS_MODELS = Literal[
+    "OuteAI/OuteTTS-0.1-350M-GGUF/OuteTTS-0.1-350M-FP16.gguf",
+    "OuteAI/OuteTTS-0.2-500M-GGUF/OuteTTS-0.2-500M-FP16.gguf",
     "parler-tts/parler-tts-large-v1",
     "parler-tts/parler-tts-mini-v1",
     "parler-tts/parler-tts-mini-v1.1",

@@ -54,8 +54,7 @@ Customizing the app:
 Example:
 
 ```python
-PODCAST_PROMPT = """
-SPEAKER_DESCRIPTIONS = {
+SPEAKER_DESCRIPTIONS_OUTE = {
     "1": "A cheerful and animated voice with a fast-paced delivery.",
     "2": "A calm and deep voice, speaking with authority and warmth."
 }
@@ -78,6 +77,7 @@ Example:
 def load_text_to_speech_model_and_tokenizer():
     return load_parler_tts_model_and_tokenizer(
         "parler-tts/parler-tts-mini-expresso", "cpu")
+```
 
 ## 💡 Other Customization Ideas
 
