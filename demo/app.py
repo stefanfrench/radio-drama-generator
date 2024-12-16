@@ -15,6 +15,8 @@ from document_to_podcast.inference.text_to_speech import text_to_speech
 from document_to_podcast.inference.text_to_text import text_to_text_stream
 
 
+
+
 @st.cache_resource
 def load_text_to_text_model():
     return load_llama_cpp_model(
@@ -29,7 +31,7 @@ def load_text_to_speech_model():
 
 script = "script"
 audio = "audio"
-gen_button = "generate podcast button"
+gen_button = "generate_radio_drama_button"
 if script not in st.session_state:
     st.session_state[script] = ""
 if audio not in st.session_state:
@@ -42,59 +44,27 @@ def gen_button_clicked():
     st.session_state[gen_button] = True
 
 
-st.title("Document To Podcast")
+st.title("📖 Radio Drama Generator")
 
-st.header("Uploading Data")
+st.header("🎭 Upload intro context for your Story")
 
 uploaded_file = st.file_uploader(
-    "Choose a file", type=["pdf", "html", "txt", "docx", "md"]
+    "Choose a file to transform into a radio drama (e.g., `.pdf`, `.html`, `.txt`, `.docx`, `.md`):",
+    type=["pdf", "html", "txt", "docx", "md"],
 )
 
-
 if uploaded_file is not None:
-    st.divider()
-    st.header("Loading and Cleaning Data")
-    st.markdown(
-        "[Docs for this Step](https://mozilla-ai.github.io/document-to-podcast/step-by-step-guide/#step-1-document-pre-processing)"
-    )
     st.divider()
 
     extension = Path(uploaded_file.name).suffix
 
-    col1, col2 = st.columns(2)
 
     raw_text = DATA_LOADERS[extension](uploaded_file)
-    with col1:
-        st.subheader("Raw Text")
-        st.text_area(
-            f"Number of characters before cleaning: {len(raw_text)}",
-            f"{raw_text[:500]} . . .",
-        )
 
     clean_text = DATA_CLEANERS[extension](raw_text)
-    with col2:
-        st.subheader("Cleaned Text")
-        st.text_area(
-            f"Number of characters after cleaning: {len(clean_text)}",
-            f"{clean_text[:500]} . . .",
-        )
 
-    st.divider()
-    st.header("Downloading and Loading models")
-    st.markdown(
-        "[Docs for this Step](https://mozilla-ai.github.io/document-to-podcast/step-by-step-guide/#step-2-podcast-script-generation)"
-    )
-    st.divider()
+    st.header("🤖 Loading AI Models")
 
-    st.markdown(
-        "For this demo, we are using the following models: \n"
-        "- [OLMoE-1B-7B-0924-Instruct-GGUF](https://huggingface.co/allenai/OLMoE-1B-7B-0924-Instruct-GGUF)\n"
-        "- [OuteAI/OuteTTS-0.1-350M-GGUF/OuteTTS-0.1-350M-FP16.gguf](https://huggingface.co/OuteAI/OuteTTS-0.1-350M-GGUF)"
-    )
-    st.markdown(
-        "You can check the [Customization Guide](https://mozilla-ai.github.io/document-to-podcast/customization/)"
-        " for more information on how to use different models."
-    )
 
     text_model = load_text_to_text_model()
     speech_model = load_text_to_speech_model()
@@ -103,31 +73,28 @@ if uploaded_file is not None:
     max_characters = text_model.n_ctx() * 4
     if len(clean_text) > max_characters:
         st.warning(
-            f"Input text is too big ({len(clean_text)})."
-            f" Using only a subset of it ({max_characters})."
+            f"Input text is too large ({len(clean_text)})."
+            f" Using only a subset ({max_characters} characters)."
         )
         clean_text = clean_text[:max_characters]
 
     st.divider()
-    st.header("Podcast generation")
-    st.markdown(
-        "[Docs for this Step](https://mozilla-ai.github.io/document-to-podcast/step-by-step-guide/#step-3-audio-podcast-generation)"
-    )
+    st.header("🎙️ Generate Your Radio Drama")
     st.divider()
 
-    st.subheader("Speaker configuration")
+    st.subheader("🎭 Configure Your Characters")
     for s in DEFAULT_SPEAKERS:
         s.pop("id", None)
     speakers = st.data_editor(DEFAULT_SPEAKERS, num_rows="dynamic")
 
-    if st.button("Generate Podcast", on_click=gen_button_clicked):
+    if st.button("Generate Radio Drama", on_click=gen_button_clicked):
         for n, speaker in enumerate(speakers):
             speaker["id"] = n + 1
         system_prompt = DEFAULT_PROMPT.replace(
             "{SPEAKERS}",
             "\n".join(str(Speaker.model_validate(speaker)) for speaker in speakers),
         )
-        with st.spinner("Generating Podcast..."):
+        with st.spinner("Generating Dialogue..."):
             text = ""
             for chunk in text_to_text_stream(
                 clean_text, text_model, system_prompt=system_prompt.strip()
@@ -155,16 +122,16 @@ if uploaded_file is not None:
                     text = ""
 
     if st.session_state[gen_button]:
-        if st.button("Save Podcast to audio file"):
+        if st.button("🎧 Save Radio Drama as Audio"):
             st.session_state.audio = np.concatenate(st.session_state.audio)
             sf.write(
-                "podcast.wav",
+                "radio_drama.wav",
                 st.session_state.audio,
                 samplerate=speech_model.audio_codec.sr,
             )
-            st.markdown("Podcast saved to disk!")
+            st.markdown("Radio drama saved as an audio file!")
 
-        if st.button("Save Podcast script to text file"):
+        if st.button("📜 Save Script as Text File"):
             with open("script.txt", "w") as f:
                 st.session_state.script += "}"
                 f.write(st.session_state.script)
