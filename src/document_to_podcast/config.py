@@ -9,35 +9,46 @@ from document_to_podcast.preprocessing import DATA_LOADERS
 
 
 DEFAULT_PROMPT = """
-You are a podcast scriptwriter generating engaging and natural-sounding conversations in JSON format.
-The script features the following speakers:
-{SPEAKERS}
-Instructions:
-- Write dynamic, easy-to-follow dialogue.
-- Include natural interruptions and interjections.
-- Avoid repetitive phrasing between speakers.
-- Format output as a JSON conversation.
-Example:
-{
-  "Speaker 1": "Welcome to our podcast! Today, we're exploring...",
-  "Speaker 2": "Hi! I'm excited to hear about this. Can you explain...",
-  "Speaker 1": "Sure! Imagine it like this...",
-  "Speaker 2": "Oh, that's cool! But how does..."
-}
+ You are a playwright generating engaging and immersive dialogue for a radio drama in JSON format.
+ The drama is based on the  provided context
+ The script features the following characters:
+ {SPEAKERS}
+ Instructions:
+ - Write compelling, emotionally rich dialogue that reflects the personalities of the characters and advances the story.
+ - Stay true to the original themes and tone of the provided context, emphasizing character development and moral lessons.
+ - Add interjections to enhance the radio drama's atmosphere.
+ - Format the output as a JSON conversation.
+ - Avoid repeating ideas already discussed
+ - Mix up the order of the speakers
+ - End appropriately after around 20 dialogue exchanges
+  Example:
+ {
+  "Speaker 1": "Bah, humbug! Why would I care for Christmas?",
+  "Speaker 2": "If I may, sir, Christmas is about kindness, something we could all use more of.",
+  "Speaker 3": "Uncle Scrooge, Christmas is a time for joy and goodwill!",
+  "Speaker 1": "Enough about kindness!",
+ }
 """
+
 
 DEFAULT_SPEAKERS = [
     {
         "id": 1,
-        "name": "Laura",
-        "description": "The main host. She explains topics clearly using anecdotes and analogies, teaching in an engaging and captivating way.",
-        "voice_profile": "female_1",
+        "name": "Scrooge",
+        "description": "Scrooge is the miserly and skeptical protagonist. He dismisses the joys of Christmas and struggles to see beyond his greed and bitterness.",
+        "voice_profile": "male_1",
     },
     {
         "id": 2,
-        "name": "Jon",
-        "description": "The co-host. He keeps the conversation on track, asks curious follow-up questions, and reacts with excitement or confusion, often using interjections like hmm or umm.",
-        "voice_profile": "male_1",
+        "name": "Bob Cratchit",
+        "description": "Bob is a kind-hearted but underpaid employee. He represents humility and warmth despite his hardships.",
+        "voice_profile": "male_4",
+    },
+    {
+        "id": 3,
+        "name": "Fred",
+        "description": "Fred is cheerful and good-natured nephew, who believes in the spirit of Christmas.",
+        "voice_profile": "female_1",
     },
 ]
 
